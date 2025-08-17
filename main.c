@@ -32,10 +32,27 @@ struct EmployeeType
     char Occupation[100];
 };
 
-void ExitWithPrematureFileEnding()
+
+void ExitWithPrematureFileEnding(void)
 {
     printf("Employee file ended prematurely.\n");
     exit(-1);
+}
+
+void ReadAndCopyNextLine(FILE *employeeFile, char *dest)
+{
+    char temp[EMPLOYEE_FILE_MAX_LINE];
+    char *result = 0;
+    
+    memset(temp, '\0', EMPLOYEE_FILE_MAX_LINE);
+    
+    result = fgets(temp, EMPLOYEE_FILE_MAX_LINE - 1, employeeFile);
+    strcpy(dest, temp);
+    
+    if (result == NULL)
+        ExitWithPrematureFileEnding();
+    
+    fclose(employeeFile);
 }
 
 void ReadEmployeeFile(struct EmployeeType *employee, const char *employeeName)
@@ -50,32 +67,8 @@ void ReadEmployeeFile(struct EmployeeType *employee, const char *employeeName)
         exit(-1);
     }
     
-    char temp[EMPLOYEE_FILE_MAX_LINE];
-    char *result = 0;
-    
-    memset(temp, '\0', EMPLOYEE_FILE_MAX_LINE);
-    
-    if (employeeFile != NULL)
-    {
-        result = fgets(temp, EMPLOYEE_FILE_MAX_LINE - 1, employeeFile);
-        strcpy(employee->FirstName, temp);
-        memset(temp, '\0', EMPLOYEE_FILE_MAX_LINE);
-    }
-    else
-    {
-        ExitWithPrematureFileEnding();
-    }
-    
-    if (result != NULL)
-    {
-        fgets(temp, EMPLOYEE_FILE_MAX_LINE, employeeFile);
-        strcpy(employee->LastName, temp);
-        memset(temp, '\0', EMPLOYEE_FILE_MAX_LINE);
-    }
-    else
-    {
-        ExitWithPrematureFileEnding();
-    }
+    ReadAndCopyNextLine(employeeFile, employee->FirstName);
+    ReadAndCopyNextLine(employeeFile, employee->LastName);
     
     fclose(employeeFile);
 }
