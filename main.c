@@ -10,6 +10,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "html.h"
+
 #define EMPLOYEE_FILE_MAX_LINE 200
 
 struct DateType
@@ -51,8 +53,6 @@ void ReadAndCopyNextLine(FILE *employeeFile, char *dest)
     
     if (result == NULL)
         ExitWithPrematureFileEnding();
-    
-    fclose(employeeFile);
 }
 
 void ReadEmployeeFile(struct EmployeeType *employee, const char *employeeName)
@@ -73,13 +73,20 @@ void ReadEmployeeFile(struct EmployeeType *employee, const char *employeeName)
     fclose(employeeFile);
 }
 
+void PrintEmployeeDetails(struct EmployeeType employee)
+{
+    printf("First Name: %s", employee.FirstName);
+    printf("Last Name: %s", employee.LastName);
+    printf("Address: %s", employee.Address);
+}
+
 int main(int argc, const char * argv[]) {
-    printf("Payslip App.\n");
     struct EmployeeType employee;
     
-    ReadEmployeeFile(&employee, "emp.txt");
+    printf("Payslip App.\n");
     
-    printf("First Name: %s", employee.FirstName);
+    ReadEmployeeFile(&employee, "emp.txt");
+    PrintEmployeeDetails(employee);
     
     printf("\n");
     
