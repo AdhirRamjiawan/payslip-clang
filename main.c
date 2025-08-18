@@ -82,6 +82,9 @@ void PrintEmployeeDetails(struct EmployeeType employee)
 
 int main(int argc, const char * argv[]) {
     struct EmployeeType employee;
+    struct HtmlDocumentType *htmlDocument = (struct HtmlDocumentType *)malloc(sizeof(struct HtmlDocumentType));
+    
+    InitHtmlDocument(htmlDocument);
     
     printf("Payslip App.\n");
     
@@ -89,6 +92,8 @@ int main(int argc, const char * argv[]) {
     PrintEmployeeDetails(employee);
     
     printf("\n");
+    
+    FreeHtmlDocument(htmlDocument);
     
     return 0;
 }

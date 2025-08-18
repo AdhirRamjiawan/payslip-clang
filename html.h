@@ -21,12 +21,12 @@ struct HtmlElementType
 
 struct HtmlDocumentType
 {
-    struct HtmlElementType Header;
-    struct HtmlElementType Body;
-    struct HtmlElementType Footer;
+    struct HtmlElementType *Header;
+    struct HtmlElementType *Body;
+    struct HtmlElementType *Footer;
 };
 
 void InitHtmlDocument(struct HtmlDocumentType *htmlDocument);
 void WriteHtmlDocumentToFile(const char *filePath);
-
+void FreeHtmlDocument(struct HtmlDocumentType *htmlDocument);
 #endif
