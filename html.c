@@ -51,13 +51,21 @@ void WriteHtmlDocumentToFile(const char *filePath)
     
     assert(outputFile && "Could not create output html file");
     
-    char *html = (char *)malloc(sizeof(char) * MAX_HTML_CONTENT);
+    char *htmlDocument = html_document("<h1>Hello world</h1>");
     
-    snprintf(html, 50, "%s", "<html></html>");
-    
-    fputs(html, outputFile);
+    fputs(htmlDocument, outputFile);
     fclose(outputFile);
-    free(html);
+    free(htmlDocument);
+}
+
+char *html_document(char *html)
+{
+    unsigned long documentSize = (strlen(html) + 13)  * sizeof(char);
+    char *result = (char *)malloc(documentSize);
+    
+    snprintf(result, documentSize, "<html>%s</html>", html);
+    
+    return result;
 }
 
 /** /END/ USER SPACE METHODS  **/
