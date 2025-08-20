@@ -51,14 +51,14 @@ void WriteHtmlDocumentToFile(const char *filePath)
     
     assert(outputFile && "Could not create output html file");
     
-    char *htmlDocument = html_document("<h1>Hello world</h1>");
+    char *htmlDocument = HtmlDocument("<h1>Hello world</h1>");
     
     fputs(htmlDocument, outputFile);
     fclose(outputFile);
     free(htmlDocument);
 }
 
-char *html_document(char *html)
+char *HtmlDocument(char *html)
 {
     unsigned long documentSize = (strlen(html) + 13)  * sizeof(char);
     char *result = (char *)malloc(documentSize);
