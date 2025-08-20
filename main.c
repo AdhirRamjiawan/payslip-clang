@@ -92,6 +92,7 @@ int main(int argc, const char * argv[]) {
     PrintEmployeeDetails(employee);
     
     printf("\n");
+    WriteHtmlDocumentToFile("payslip.html");
     
     FreeHtmlDocument(htmlDocument);
     

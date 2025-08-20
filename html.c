@@ -9,6 +9,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <memory.h>
+#include <stdio.h>
 
 #include "memory.h"
 
@@ -44,7 +45,19 @@ void FreeHtmlDocument(struct HtmlDocumentType *htmlDocument)
 
 void WriteHtmlDocumentToFile(const char *filePath)
 {
+    assert(filePath && "No html output file path provided.");
     
+    FILE *outputFile = fopen(filePath, "w");
+    
+    assert(outputFile && "Could not create output html file");
+    
+    char *html = (char *)malloc(sizeof(char) * MAX_HTML_CONTENT);
+    
+    snprintf(html, 50, "%s", "<html></html>");
+    
+    fputs(html, outputFile);
+    fclose(outputFile);
+    free(html);
 }
 
 /** /END/ USER SPACE METHODS  **/
