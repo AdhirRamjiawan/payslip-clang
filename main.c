@@ -94,7 +94,7 @@ int main(int argc, const char * argv[]) {
     printf("\n");
     WriteHtmlDocumentToFile("payslip.html");
     
-    FreeHtmlDocument(htmlDocument);
+    FreeHtmlDocument();
     
     return 0;
 }

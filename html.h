@@ -10,13 +10,11 @@
 #define HTML_H
 
 #define MAX_HTML_CONTENT 1024 * 100
-#define MAX_HTML_ELEMENT_CHILDREN 100
 
 struct HtmlElementType
 {
     char TagName[100];
     char InnerHtml[MAX_HTML_CONTENT];
-    struct HtmlElementType *Children[MAX_HTML_ELEMENT_CHILDREN];
 };
 
 struct HtmlDocumentType
@@ -26,7 +24,9 @@ struct HtmlDocumentType
     struct HtmlElementType *Footer;
 };
 
-char *HtmlDocument(char *html);
+static struct HtmlDocumentType *_documentState;
+
+char *HtmlDocument(void);
 char *HtmlBody(char *html);
 char *HtmlHead(char *html);
 char *HtmlFooter(char *html);
@@ -51,5 +51,7 @@ char *HtmlH3(char *html);
 
 void InitHtmlDocument(struct HtmlDocumentType *htmlDocument);
 void WriteHtmlDocumentToFile(const char *filePath);
-void FreeHtmlDocument(struct HtmlDocumentType *htmlDocument);
+void FreeHtmlDocument(void);
+
+
 #endif

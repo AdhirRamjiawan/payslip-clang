@@ -13,6 +13,10 @@
 
 #include "memory.h"
 
+/** LOCAL METHOD PROTOTYPES **/
+unsigned long _getDocumentHtmlLength(void);
+/** /END/ LOCAL METHOD PROTOTYPES **/
+
 /** USER SPACE METHODS  **/
 
 void InitHtmlDocument(struct HtmlDocumentType *htmlDocument)
@@ -25,22 +29,27 @@ void InitHtmlDocument(struct HtmlDocumentType *htmlDocument)
     if (UNALLOCATED(htmlDocument->Header))
         htmlDocument->Header = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
     
+    if (UNALLOCATED((htmlDocument->Footer)))
+        htmlDocument->Footer = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
+    
+    _documentState = htmlDocument;
 }
 
-void FreeHtmlDocument(struct HtmlDocumentType *htmlDocument)
+void FreeHtmlDocument(void)
 {
-    assert(htmlDocument && "Cannot free memory on NULL HtmlDocument.");
+    assert(_documentState && "Cannot free memory on NULL HtmlDocument.");
     
-    if (ALLOCATED(htmlDocument->Header))
-        free(&(htmlDocument->Header));
+    if (ALLOCATED(_documentState->Header))
+        free(&(_documentState->Header));
     
-    if (ALLOCATED(htmlDocument->Footer))
-        free(&(htmlDocument->Footer));
+    if (ALLOCATED(_documentState->Footer))
+        free(&(_documentState->Footer));
     
-    if (ALLOCATED(htmlDocument->Body))
-        free(&(htmlDocument->Body));
+    if (ALLOCATED(_documentState->Body))
+        free(&(_documentState->Body));
         
-    free(htmlDocument);
+    free(_documentState);
+    
 }
 
 void WriteHtmlDocumentToFile(const char *filePath)
@@ -51,19 +60,19 @@ void WriteHtmlDocumentToFile(const char *filePath)
     
     assert(outputFile && "Could not create output html file");
     
-    char *htmlDocument = HtmlDocument("<h1>Hello world</h1>");
+    char *result = HtmlDocument();
     
-    fputs(htmlDocument, outputFile);
+    fputs(result, outputFile);
     fclose(outputFile);
-    free(htmlDocument);
+    free(result);
 }
 
-char *HtmlDocument(char *html)
+char *HtmlDocument(void)
 {
-    unsigned long documentSize = (strlen(html) + 13)  * sizeof(char);
+    unsigned long documentSize = (_getDocumentHtmlLength() + 13)  * sizeof(char);
     char *result = (char *)malloc(documentSize);
     
-    snprintf(result, documentSize, "<html>%s</html>", html);
+    snprintf(result, documentSize, "<html>%s%s%s</html>", _documentState->Header->InnerHtml, _documentState->Body->InnerHtml, _documentState->Footer->InnerHtml);
     
     return result;
 }
@@ -71,5 +80,13 @@ char *HtmlDocument(char *html)
 /** /END/ USER SPACE METHODS  **/
 
 /** LOCAL  METHODS  **/
+
+unsigned long _getDocumentHtmlLength(void)
+{
+    return
+        strlen(_documentState->Header->InnerHtml) +
+        strlen(_documentState->Body->InnerHtml) +
+        strlen(_documentState->Footer->InnerHtml);
+}
 
 /** /END/ LOCAL  METHODS  **/
