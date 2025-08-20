@@ -24,34 +24,33 @@ struct HtmlDocumentType
     struct HtmlElementType *Footer;
 };
 
-static struct HtmlDocumentType *_documentState;
 
-char *HtmlDocument(void);
-char *HtmlBody(char *html);
-char *HtmlHead(char *html);
-char *HtmlFooter(char *html);
+char *HtmlDocument(struct HtmlDocumentType *htmlDocument);
+void HtmlBody(char *dest, char *html);
+void HtmlHead(char *dest, char *html);
+void HtmlFooter(char *dest, char *html);
 
-char *HtmlP(char *html);
-char *HtmlDiv(char *html);
-char *HtmlSpan(char *html);
-char *HtmlStrong(char *html);
-char *HtmlB(char *html);
-char *HtmlTable(char *html);
-char *HtmlThead(char *html);
-char *HtmlTbody(char *html);
-char *HtmlTh(char *html);
-char *HtmlTr(char *html);
-char *HtmlTd(char *html);
+void HtmlP(struct HtmlElementType *dest, char *html);
+void HtmlDiv(struct HtmlElementType *dest, char *html);
+void HtmlSpan(struct HtmlElementType *dest, char *html);
+void HtmlStrong(struct HtmlElementType *dest, char *html);
+void HtmlB(struct HtmlElementType *dest, char *html);
+void HtmlTable(struct HtmlElementType *dest, char *html);
+void HtmlThead(struct HtmlElementType *dest, char *html);
+void HtmlTbody(struct HtmlElementType *dest, char *html);
+void HtmlTh(struct HtmlElementType *dest, char *html);
+void HtmlTr(struct HtmlElementType *dest, char *html);
+void HtmlTd(struct HtmlElementType *dest, char *html);
 
 
-char *HtmlH1(char *html);
-char *HtmlH2(char *html);
-char *HtmlH3(char *html);
+void HtmlH1(struct HtmlElementType *dest, char *html);
+void HtmlH2(struct HtmlElementType *dest, char *html);
+void HtmlH3(struct HtmlElementType *dest, char *html);
 
 
 void InitHtmlDocument(struct HtmlDocumentType *htmlDocument);
-void WriteHtmlDocumentToFile(const char *filePath);
-void FreeHtmlDocument(void);
+void WriteHtmlDocumentToFile(const char *filePath, struct HtmlDocumentType *htmlDocument);
+void FreeHtmlDocument(struct HtmlDocumentType *htmlDocument);
 
 
 #endif

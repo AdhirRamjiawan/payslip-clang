@@ -90,11 +90,13 @@ int main(int argc, const char * argv[]) {
     
     ReadEmployeeFile(&employee, "emp.txt");
     PrintEmployeeDetails(employee);
-    
+   
+    HtmlHead(htmlDocument->Header->InnerHtml, "<title>My Payslip</title>");
+
     printf("\n");
-    WriteHtmlDocumentToFile("payslip.html");
+    WriteHtmlDocumentToFile("payslip.html", htmlDocument);
     
-    FreeHtmlDocument();
+    FreeHtmlDocument(htmlDocument);
     
     return 0;
 }
