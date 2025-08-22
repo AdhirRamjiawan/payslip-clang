@@ -11,8 +11,6 @@
 #include <memory.h>
 #include <stdio.h>
 
-#include "memory.h"
-
 /** LOCAL METHOD PROTOTYPES **/
 unsigned long _getDocumentHtmlLength(struct HtmlDocumentType *htmlDocument);
 /** /END/ LOCAL METHOD PROTOTYPES **/
@@ -21,12 +19,10 @@ unsigned long _getDocumentHtmlLength(struct HtmlDocumentType *htmlDocument);
 
 void InitHtmlElement(struct HtmlElementType *html)
 {
-    assert(html && "You need to allocate memory for HtmlElement to use this method");
-
-    if (html)
+    if (html != 0x0)
         html->InnerHtml = (char *)malloc(sizeof(char) * MAX_HTML_CONTENT);
 
-    if (!html->InnerHtml)
+    if (html->InnerHtml == 0x0)
     {
         printf("failed to allocate memory for HtmlElementType");
         exit(-1);
@@ -35,9 +31,7 @@ void InitHtmlElement(struct HtmlElementType *html)
 
 void FreeHtmlElement(struct HtmlElementType *html)
 {
-    assert(html && "Cannot free memory on NULL HtmlElement");
-
-    if (html && html->InnerHtml)
+    if (html != 0x0 && html->InnerHtml != 0x0)
         free(html->InnerHtml);
 
     free(html);
@@ -45,17 +39,19 @@ void FreeHtmlElement(struct HtmlElementType *html)
 
 void InitHtmlDocument(struct HtmlDocumentType *htmlDocument)
 {
-    assert(htmlDocument && "You need to allocate memory for HtmlDocument struct to use this method.");
-    
-    if (UNALLOCATED(htmlDocument->Body))
-        htmlDocument->Body = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
+    if (htmlDocument->Body != 0x0)
+        FreeHtmlElement(htmlDocument->Body);
 
-    if (UNALLOCATED(htmlDocument->Header))
-        htmlDocument->Header = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
+    if (htmlDocument->Header != 0x0)
+        FreeHtmlElement(htmlDocument->Header);
     
-    if (UNALLOCATED((htmlDocument->Footer)))
-        htmlDocument->Footer = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
+    if (htmlDocument->Footer != 0x0)
+        FreeHtmlElement(htmlDocument->Footer);
         
+
+    htmlDocument->Header = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
+    htmlDocument->Body = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
+    htmlDocument->Footer = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
 
     InitHtmlElement(htmlDocument->Header);
     InitHtmlElement(htmlDocument->Body);
@@ -64,16 +60,15 @@ void InitHtmlDocument(struct HtmlDocumentType *htmlDocument)
 
 void FreeHtmlDocument(struct HtmlDocumentType *htmlDocument)
 {
-    assert(htmlDocument && "Cannot free memory on NULL HtmlDocument.");
-    
-    if (ALLOCATED(htmlDocument->Header))
-        free(&(htmlDocument->Header));
-    
-    if (ALLOCATED(htmlDocument->Footer))
-        free(&(htmlDocument->Footer));
-    
-    if (ALLOCATED(htmlDocument->Body))
-        free(&(htmlDocument->Body));
+    if (htmlDocument == 0x0)
+    {
+        printf("Unable to free memory on HtmlDocumentType");
+        abort();
+    }
+
+    FreeHtmlElement(htmlDocument->Header);
+    FreeHtmlElement(htmlDocument->Footer);
+    FreeHtmlElement(htmlDocument->Body);
         
     free(htmlDocument);
     
