@@ -11,6 +11,12 @@
 
 #define MAX_HTML_CONTENT 1024 * 100
 
+// HTML_TAG_SYNTAX_LENGTH is meant to count the
+// angle brackets of both opening and closing tags,
+// as well as forward slash on the closing tag.
+// <..></..>
+#define HTML_TAG_SYNTAX_LENGTH 5 
+
 struct HtmlElementType
 {
     char *InnerHtml;//[MAX_HTML_CONTENT];

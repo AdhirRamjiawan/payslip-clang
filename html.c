@@ -104,21 +104,66 @@ char *HtmlDocument(struct HtmlDocumentType *htmlDocument)
 
 void HtmlHead(char *dest, char *html)
 {
-    unsigned long htmlSize = (strlen(html) + 5 + 8) * sizeof(char);
+    unsigned long htmlSize = (strlen(html) + HTML_TAG_SYNTAX_LENGTH  + 8) * sizeof(char);
 
     snprintf(dest, htmlSize, "<head>%s</head>", html);
 }
 
 void HtmlBody(char *dest, char *html)
 {
-    unsigned long htmlSize = (strlen(html) + 5 + 8);
+    unsigned long htmlSize = (strlen(html) + HTML_TAG_SYNTAX_LENGTH + 8);
 
     snprintf(dest, htmlSize, "<body>%s</body>", html);
 }
 
+void HtmlTable(struct HtmlElementType *dest, char *html)
+{
+    unsigned long htmlSize = (strlen(html) + HTML_TAG_SYNTAX_LENGTH + 10) * sizeof(char);
+
+    snprintf(dest->InnerHtml, htmlSize, "<table>%s</table>", html);
+
+}
+
+void HtmlThead(struct HtmlElementType *dest, char *html)
+{
+
+}
+
+void HtmlTbody(struct HtmlElementType *dest, char *html)
+{
+
+}
+
+void HtmlTh(struct HtmlElementType *dest, char *html)
+{
+
+}
+
+void HtmlTr(struct HtmlElementType *dest, char *html)
+{
+    unsigned long htmlSize = (strlen(html) + HTML_TAG_SYNTAX_LENGTH + 4) * sizeof(char);
+
+    snprintf(dest->InnerHtml, htmlSize, "<tr>%s</tr>", html);
+}
+
+void HtmlTd(struct HtmlElementType *dest, char *html)
+{
+    unsigned long htmlSize = (strlen(html) + HTML_TAG_SYNTAX_LENGTH + 4) * sizeof(char);
+
+    snprintf(dest->InnerHtml, htmlSize, "<td>%s</td>", html);
+}
+
+
+void HtmlDiv(struct HtmlElementType *dest, char *html)
+{
+    unsigned long htmlSize = (strlen(html) +  HTML_TAG_SYNTAX_LENGTH + 6) * sizeof(char);
+
+    snprintf(dest->InnerHtml, htmlSize, "<div>%s</div>", html);
+}
+
 void HtmlH1(struct HtmlElementType *dest, char *html)
 {
-    unsigned long htmlSize = (strlen(html) + 5 + 4) * sizeof(char);
+    unsigned long htmlSize = (strlen(html) + HTML_TAG_SYNTAX_LENGTH + 4) * sizeof(char);
 
     snprintf(dest->InnerHtml, htmlSize, "<h1>%s</h1>", html);
 }

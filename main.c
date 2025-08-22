@@ -80,28 +80,97 @@ void PrintEmployeeDetails(struct EmployeeType employee)
     printf("Address: %s", employee.Address);
 }
 
-int main(int argc, const char * argv[]) {
-    struct EmployeeType employee;
+void BuildEmployerSectionHtml(struct HtmlElementType *parent)
+{
+    struct HtmlElementType *container = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
+    struct HtmlElementType *table = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
+    struct HtmlElementType *row1 = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
+    struct HtmlElementType *row2 = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
+    struct HtmlElementType *td1Row1 = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
+    struct HtmlElementType *td2Row1 = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
+    struct HtmlElementType *td1Row2 = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
+    struct HtmlElementType *td2Row2 = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
+
+    InitHtmlElement(container);
+    InitHtmlElement(table);
+    InitHtmlElement(row1);
+    InitHtmlElement(row2);
+   
+    InitHtmlElement(td1Row1);
+    InitHtmlElement(td2Row1);
+    InitHtmlElement(td1Row2);
+    InitHtmlElement(td2Row2);
+
+  
+    HtmlTd(td1Row1, "Employer:");
+    HtmlTd(td2Row1, "****:");
+    
+    HtmlTd(td1Row2, "Address:");
+    HtmlTd(td2Row2, "****:");
+  
+    unsigned long tempHtmlSize = (strlen(td1Row1->InnerHtml) + strlen(td2Row1->InnerHtml)) * sizeof(char);
+    char *temp = (char *)malloc(tempHtmlSize);
+
+    snprintf(temp, tempHtmlSize, "%s%s", td1Row1->InnerHtml, td2Row1->InnerHtml);
+
+    HtmlTr(row1, temp);
+
+    tempHtmlSize = (strlen(td1Row2->InnerHtml) + strlen(td2Row2->InnerHtml)) * sizeof(char);
+    temp = (char *)malloc(tempHtmlSize);
+
+    snprintf(temp, tempHtmlSize, "%s%s", td1Row2->InnerHtml, td2Row2->InnerHtml);
+    
+    HtmlTr(row2, temp);
+   
+
+    tempHtmlSize = (strlen(row1->InnerHtml) + strlen(row2->InnerHtml)) * sizeof(char);
+    temp = (char *)malloc(tempHtmlSize);
+
+    snprintf(temp, tempHtmlSize, "%s%s", row1->InnerHtml, row2->InnerHtml);
+
+
+    HtmlTable(table, temp);
+    HtmlDiv(container, table->InnerHtml); 
+    HtmlDiv(parent, container->InnerHtml); 
+
+    free(temp);
+    free(row1);
+    free(row2);
+    free(td1Row1);
+    free(td2Row1);
+    free(td1Row2);
+    free(td2Row2);
+}
+
+void BuildPayslipHtml(void)
+{
     struct HtmlDocumentType *htmlDocument = (struct HtmlDocumentType *)malloc(sizeof(struct HtmlDocumentType));
     struct HtmlElementType *body = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
-
+    
     InitHtmlDocument(htmlDocument);
+    HtmlHead(htmlDocument->Header->InnerHtml, "<title>My Payslip</title>");
+    
+    InitHtmlElement(body);
+    BuildEmployerSectionHtml(body);
+
+    HtmlBody(htmlDocument->Body->InnerHtml, body->InnerHtml);
+    
+    WriteHtmlDocumentToFile("payslip.html", htmlDocument);
+    
+    FreeHtmlDocument(htmlDocument);
+    FreeHtmlElement(body); 
+}
+
+int main(int argc, const char * argv[]) {
+    struct EmployeeType employee;
     
     printf("Payslip App.\n");
     
     ReadEmployeeFile(&employee, "emp.txt");
     PrintEmployeeDetails(employee);
-   
-    HtmlHead(htmlDocument->Header->InnerHtml, "<title>My Payslip</title>");
 
-    InitHtmlElement(body);
-    HtmlH1(body, "Hello World!");
-    HtmlBody(htmlDocument->Body->InnerHtml, body->InnerHtml);
+    BuildPayslipHtml();
 
     printf("\n");
-    WriteHtmlDocumentToFile("payslip.html", htmlDocument);
-    
-    FreeHtmlDocument(htmlDocument);
-    FreeHtmlElement(body); 
     return 0;
 }
