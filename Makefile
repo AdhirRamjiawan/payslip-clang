@@ -13,3 +13,6 @@ debug:
 	gcc -g main.c html.h html.c 
 	mv a.out payslip
 	mv a.out.dSYM payslip.dSYM
+
+code:
+	vim -p main.c html.c html.h
