@@ -4,3 +4,5 @@ a.out
 *.gch
 *.html
 payslip
+*.swp
+payslip.dSYM/*

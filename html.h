@@ -13,8 +13,7 @@
 
 struct HtmlElementType
 {
-    char TagName[100];
-    char InnerHtml[MAX_HTML_CONTENT];
+    char *InnerHtml;//[MAX_HTML_CONTENT];
 };
 
 struct HtmlDocumentType
@@ -47,6 +46,8 @@ void HtmlH1(struct HtmlElementType *dest, char *html);
 void HtmlH2(struct HtmlElementType *dest, char *html);
 void HtmlH3(struct HtmlElementType *dest, char *html);
 
+void InitHtmlElement(struct HtmlElementType *html);
+void FreeHtmlElement(struct HtmlElementType *html);
 
 void InitHtmlDocument(struct HtmlDocumentType *htmlDocument);
 void WriteHtmlDocumentToFile(const char *filePath, struct HtmlDocumentType *htmlDocument);

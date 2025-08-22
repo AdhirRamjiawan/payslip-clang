@@ -83,7 +83,8 @@ void PrintEmployeeDetails(struct EmployeeType employee)
 int main(int argc, const char * argv[]) {
     struct EmployeeType employee;
     struct HtmlDocumentType *htmlDocument = (struct HtmlDocumentType *)malloc(sizeof(struct HtmlDocumentType));
-    
+    struct HtmlElementType *body = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
+
     InitHtmlDocument(htmlDocument);
     
     printf("Payslip App.\n");
@@ -93,10 +94,14 @@ int main(int argc, const char * argv[]) {
    
     HtmlHead(htmlDocument->Header->InnerHtml, "<title>My Payslip</title>");
 
+    InitHtmlElement(body);
+    HtmlH1(body, "Hello World!");
+    HtmlBody(htmlDocument->Body->InnerHtml, body->InnerHtml);
+
     printf("\n");
     WriteHtmlDocumentToFile("payslip.html", htmlDocument);
     
     FreeHtmlDocument(htmlDocument);
-    
+    FreeHtmlElement(body); 
     return 0;
 }
