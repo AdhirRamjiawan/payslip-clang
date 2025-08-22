@@ -80,16 +80,18 @@ void PrintEmployeeDetails(struct EmployeeType employee)
     printf("Address: %s", employee.Address);
 }
 
-void BuildEmployerSectionHtml(struct HtmlElementType *parent)
+void BuildEmployerSectionHtml(HtmlElement *parent)
 {
-    struct HtmlElementType *container = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
-    struct HtmlElementType *table = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
-    struct HtmlElementType *row1 = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
-    struct HtmlElementType *row2 = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
-    struct HtmlElementType *td1Row1 = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
-    struct HtmlElementType *td2Row1 = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
-    struct HtmlElementType *td1Row2 = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
-    struct HtmlElementType *td2Row2 = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
+    unsigned long htmlElementSize = sizeof(HtmlElement);
+
+    HtmlElement *container  = (HtmlElement *) malloc(htmlElementSize);
+    HtmlElement *table      = (HtmlElement *) malloc(htmlElementSize);
+    HtmlElement *row1       = (HtmlElement *) malloc(htmlElementSize);
+    HtmlElement *row2       = (HtmlElement *) malloc(htmlElementSize);
+    HtmlElement *td1Row1    = (HtmlElement *) malloc(htmlElementSize);
+    HtmlElement *td2Row1    = (HtmlElement *) malloc(htmlElementSize);
+    HtmlElement *td1Row2    = (HtmlElement *) malloc(htmlElementSize);
+    HtmlElement *td2Row2    = (HtmlElement *) malloc(htmlElementSize);
 
     InitHtmlElement(container);
     InitHtmlElement(table);
@@ -121,13 +123,11 @@ void BuildEmployerSectionHtml(struct HtmlElementType *parent)
     snprintf(temp, tempHtmlSize, "%s%s", td1Row2->InnerHtml, td2Row2->InnerHtml);
     
     HtmlTr(row2, temp);
-   
 
     tempHtmlSize = (strlen(row1->InnerHtml) + strlen(row2->InnerHtml)) * sizeof(char);
     temp = (char *)malloc(tempHtmlSize);
 
     snprintf(temp, tempHtmlSize, "%s%s", row1->InnerHtml, row2->InnerHtml);
-
 
     HtmlTable(table, temp);
     HtmlDiv(container, table->InnerHtml); 
@@ -145,7 +145,7 @@ void BuildEmployerSectionHtml(struct HtmlElementType *parent)
 void BuildPayslipHtml(void)
 {
     struct HtmlDocumentType *htmlDocument = (struct HtmlDocumentType *)malloc(sizeof(struct HtmlDocumentType));
-    struct HtmlElementType *body = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
+    HtmlElement *body = (HtmlElement *)malloc(sizeof(HtmlElement));
     
     InitHtmlDocument(htmlDocument);
     HtmlHead(htmlDocument->Header->InnerHtml, "<title>My Payslip</title>");

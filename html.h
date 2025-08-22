@@ -29,6 +29,8 @@ struct HtmlDocumentType
     struct HtmlElementType *Footer;
 };
 
+typedef struct HtmlElementType HtmlElement;
+
 
 char *HtmlDocument(struct HtmlDocumentType *htmlDocument);
 void HtmlBody(char *dest, char *html);
