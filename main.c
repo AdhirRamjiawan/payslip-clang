@@ -110,14 +110,14 @@ void BuildEmployerSectionHtml(HtmlElement *parent)
     HtmlTd(td1Row2, "Address:");
     HtmlTd(td2Row2, "****:");
   
-    unsigned long tempHtmlSize = (strlen(td1Row1->InnerHtml) + strlen(td2Row1->InnerHtml)) * sizeof(char);
+    unsigned long tempHtmlSize = HtmlCalcHtmlLen(td1Row1, td2Row1);
     char *temp = (char *)malloc(tempHtmlSize);
 
     snprintf(temp, tempHtmlSize, "%s%s", td1Row1->InnerHtml, td2Row1->InnerHtml);
 
     HtmlTr(row1, temp);
 
-    tempHtmlSize = (strlen(td1Row2->InnerHtml) + strlen(td2Row2->InnerHtml)) * sizeof(char);
+    tempHtmlSize = HtmlCalcHtmlLen(td1Row2, td2Row2);
     temp = (char *)malloc(tempHtmlSize);
 
     snprintf(temp, tempHtmlSize, "%s%s", td1Row2->InnerHtml, td2Row2->InnerHtml);
@@ -125,6 +125,7 @@ void BuildEmployerSectionHtml(HtmlElement *parent)
     HtmlTr(row2, temp);
 
     tempHtmlSize = (strlen(row1->InnerHtml) + strlen(row2->InnerHtml)) * sizeof(char);
+    tempHtmlSize = HtmlCalcHtmlLen(row1, row2);
     temp = (char *)malloc(tempHtmlSize);
 
     snprintf(temp, tempHtmlSize, "%s%s", row1->InnerHtml, row2->InnerHtml);

@@ -167,6 +167,17 @@ void HtmlH1(struct HtmlElementType *dest, char *html)
 
     snprintf(dest->InnerHtml, htmlSize, "<h1>%s</h1>", html);
 }
+
+unsigned long HtmlCalcHtmlLenWithTagName(char *str1, char *str2, unsigned short tagNameLength)
+{
+    return 0;
+}
+
+unsigned long HtmlCalcHtmlLen(HtmlElement *element1, HtmlElement *element2)
+{
+    return (strlen(element1->InnerHtml) + strlen(element2->InnerHtml)) * sizeof(char);
+}
+
 /** /END/ USER SPACE METHODS  **/
 
 /** LOCAL  METHODS  **/

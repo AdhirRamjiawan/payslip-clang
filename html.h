@@ -49,10 +49,12 @@ void HtmlTh(struct HtmlElementType *dest, char *html);
 void HtmlTr(struct HtmlElementType *dest, char *html);
 void HtmlTd(struct HtmlElementType *dest, char *html);
 
-
 void HtmlH1(struct HtmlElementType *dest, char *html);
 void HtmlH2(struct HtmlElementType *dest, char *html);
 void HtmlH3(struct HtmlElementType *dest, char *html);
+
+unsigned long HtmlCalcHtmlLen(HtmlElement *element1, HtmlElement *element2);
+unsigned long HtmlCalcHtmlLenWithTagName(char *str1, char *str2, unsigned short tagNameLength);
 
 void InitHtmlElement(struct HtmlElementType *html);
 void FreeHtmlElement(struct HtmlElementType *html);
