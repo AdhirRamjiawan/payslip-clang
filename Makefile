@@ -3,6 +3,7 @@
 all:
 	gcc main.c html.h html.c 
 	mv a.out payslip
+	flawfinder .
 
 clean:
 	rm -f ./payslip
