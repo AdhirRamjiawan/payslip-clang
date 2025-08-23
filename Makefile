@@ -16,3 +16,6 @@ debug:
 
 code:
 	vim -p main.c html.c html.h
+
+setup:
+	brew install flawfinder
