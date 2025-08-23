@@ -58,7 +58,7 @@ unsigned long HtmlCalcHtmlLenWithTagName(char *str1, char *str2, unsigned short 
 
 void HtmlConcatElements(char *temp, unsigned long tempHtmlSize, HtmlElement *element1, HtmlElement *element2);
 
-void InitHtmlElement(struct HtmlElementType *html);
+HtmlElement *InitHtmlElement();
 void FreeHtmlElement(struct HtmlElementType *html);
 
 void InitHtmlDocument(struct HtmlDocumentType *htmlDocument);

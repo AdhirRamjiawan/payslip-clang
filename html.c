@@ -17,16 +17,18 @@ unsigned long _getDocumentHtmlLength(struct HtmlDocumentType *htmlDocument);
 
 /** USER SPACE METHODS  **/
 
-void InitHtmlElement(struct HtmlElementType *html)
+HtmlElement *InitHtmlElement()
 {
-    if (html != 0x0)
-        html->InnerHtml = (char *)malloc(sizeof(char) * MAX_HTML_CONTENT);
+    HtmlElement *element = (HtmlElement *)malloc(sizeof(HtmlElement));
+    element->InnerHtml = (char *)malloc(sizeof(char) * MAX_HTML_CONTENT);
 
-    if (html->InnerHtml == 0x0)
+    if (element->InnerHtml == 0x0)
     {
         printf("failed to allocate memory for HtmlElementType");
         exit(-1);
     }
+
+    return element;
 }
 
 void FreeHtmlElement(struct HtmlElementType *html)
@@ -49,13 +51,9 @@ void InitHtmlDocument(struct HtmlDocumentType *htmlDocument)
         FreeHtmlElement(htmlDocument->Footer);
         
 
-    htmlDocument->Header = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
-    htmlDocument->Body = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
-    htmlDocument->Footer = (struct HtmlElementType *)malloc(sizeof(struct HtmlElementType));
-
-    InitHtmlElement(htmlDocument->Header);
-    InitHtmlElement(htmlDocument->Body);
-    InitHtmlElement(htmlDocument->Footer);
+    htmlDocument->Header  = InitHtmlElement();
+    htmlDocument->Body    = InitHtmlElement();
+    htmlDocument->Footer  = InitHtmlElement();
 }
 
 void FreeHtmlDocument(struct HtmlDocumentType *htmlDocument)

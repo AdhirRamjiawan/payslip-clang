@@ -82,28 +82,15 @@ void PrintEmployeeDetails(struct EmployeeType employee)
 
 void BuildEmployerSectionHtml(HtmlElement *parent)
 {
-    unsigned long htmlElementSize = sizeof(HtmlElement);
+    HtmlElement *container  = InitHtmlElement();
+    HtmlElement *table      = InitHtmlElement();
+    HtmlElement *row1       = InitHtmlElement();
+    HtmlElement *row2       = InitHtmlElement();
+    HtmlElement *td1Row1    = InitHtmlElement();
+    HtmlElement *td2Row1    = InitHtmlElement();
+    HtmlElement *td1Row2    = InitHtmlElement();
+    HtmlElement *td2Row2    = InitHtmlElement();
 
-    HtmlElement *container  = (HtmlElement *) malloc(htmlElementSize);
-    HtmlElement *table      = (HtmlElement *) malloc(htmlElementSize);
-    HtmlElement *row1       = (HtmlElement *) malloc(htmlElementSize);
-    HtmlElement *row2       = (HtmlElement *) malloc(htmlElementSize);
-    HtmlElement *td1Row1    = (HtmlElement *) malloc(htmlElementSize);
-    HtmlElement *td2Row1    = (HtmlElement *) malloc(htmlElementSize);
-    HtmlElement *td1Row2    = (HtmlElement *) malloc(htmlElementSize);
-    HtmlElement *td2Row2    = (HtmlElement *) malloc(htmlElementSize);
-
-    InitHtmlElement(container);
-    InitHtmlElement(table);
-    InitHtmlElement(row1);
-    InitHtmlElement(row2);
-   
-    InitHtmlElement(td1Row1);
-    InitHtmlElement(td2Row1);
-    InitHtmlElement(td1Row2);
-    InitHtmlElement(td2Row2);
-
-  
     HtmlTd(td1Row1, "Employer:");
     HtmlTd(td2Row1, "****:");
     
@@ -143,12 +130,11 @@ void BuildEmployerSectionHtml(HtmlElement *parent)
 void BuildPayslipHtml(void)
 {
     struct HtmlDocumentType *htmlDocument = (struct HtmlDocumentType *)malloc(sizeof(struct HtmlDocumentType));
-    HtmlElement *body = (HtmlElement *)malloc(sizeof(HtmlElement));
+    HtmlElement *body = InitHtmlElement();
     
     InitHtmlDocument(htmlDocument);
     HtmlHead(htmlDocument->Header->InnerHtml, "<title>My Payslip</title>");
     
-    InitHtmlElement(body);
     BuildEmployerSectionHtml(body);
 
     HtmlBody(htmlDocument->Body->InnerHtml, body->InnerHtml);
