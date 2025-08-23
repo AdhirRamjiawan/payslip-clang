@@ -109,28 +109,25 @@ void BuildEmployerSectionHtml(HtmlElement *parent)
     
     HtmlTd(td1Row2, "Address:");
     HtmlTd(td2Row2, "****:");
-  
+ 
+    // Build Row 1
     unsigned long tempHtmlSize = HtmlCalcHtmlLen(td1Row1, td2Row1);
     char *temp = (char *)malloc(tempHtmlSize);
-
-    snprintf(temp, tempHtmlSize, "%s%s", td1Row1->InnerHtml, td2Row1->InnerHtml);
-
+    HtmlConcatElements(temp, tempHtmlSize, td1Row1, td2Row1);
     HtmlTr(row1, temp);
 
+    // Build Row 2
     tempHtmlSize = HtmlCalcHtmlLen(td1Row2, td2Row2);
     temp = (char *)malloc(tempHtmlSize);
-
-    snprintf(temp, tempHtmlSize, "%s%s", td1Row2->InnerHtml, td2Row2->InnerHtml);
-    
+    HtmlConcatElements(temp, tempHtmlSize, td1Row2, td2Row2);
     HtmlTr(row2, temp);
 
-    tempHtmlSize = (strlen(row1->InnerHtml) + strlen(row2->InnerHtml)) * sizeof(char);
+    // Build Table
     tempHtmlSize = HtmlCalcHtmlLen(row1, row2);
     temp = (char *)malloc(tempHtmlSize);
-
-    snprintf(temp, tempHtmlSize, "%s%s", row1->InnerHtml, row2->InnerHtml);
-
+    HtmlConcatElements(temp, tempHtmlSize, row1, row2);
     HtmlTable(table, temp);
+    
     HtmlDiv(container, table->InnerHtml); 
     HtmlDiv(parent, container->InnerHtml); 
 

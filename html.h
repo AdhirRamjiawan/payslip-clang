@@ -56,6 +56,8 @@ void HtmlH3(struct HtmlElementType *dest, char *html);
 unsigned long HtmlCalcHtmlLen(HtmlElement *element1, HtmlElement *element2);
 unsigned long HtmlCalcHtmlLenWithTagName(char *str1, char *str2, unsigned short tagNameLength);
 
+void HtmlConcatElements(char *temp, unsigned long tempHtmlSize, HtmlElement *element1, HtmlElement *element2);
+
 void InitHtmlElement(struct HtmlElementType *html);
 void FreeHtmlElement(struct HtmlElementType *html);
 

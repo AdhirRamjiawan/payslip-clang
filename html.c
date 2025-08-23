@@ -178,6 +178,11 @@ unsigned long HtmlCalcHtmlLen(HtmlElement *element1, HtmlElement *element2)
     return (strlen(element1->InnerHtml) + strlen(element2->InnerHtml)) * sizeof(char);
 }
 
+void HtmlConcatElements(char *temp, unsigned long tempHtmlSize, HtmlElement *element1, HtmlElement *element2)
+{
+    snprintf(temp, tempHtmlSize, "%s%s", element1->InnerHtml, element2->InnerHtml);
+}
+
 /** /END/ USER SPACE METHODS  **/
 
 /** LOCAL  METHODS  **/
