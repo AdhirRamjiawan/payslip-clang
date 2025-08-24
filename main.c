@@ -80,40 +80,40 @@ void PrintEmployeeDetails(struct EmployeeType employee)
     printf("Address: %s", employee.Address);
 }
 
+void BuildTableRow(HtmlElement *parent, char *str1, char *str2)
+{
+    HtmlElement *td1 = InitHtmlElement();
+    HtmlElement *td2 = InitHtmlElement();
+    HtmlTd(td1, str1);
+    HtmlTd(td2, str2);
+   
+    // in order to preserve the memory of the allocated char *,
+    // we need to create a char * handle (char **)
+    char **temp = (char **)calloc(1, sizeof(char *));
+    HtmlConcatElements(temp, td1, td2);
+    HtmlTr(parent, *temp);
+
+    free(temp);
+    free(td1);
+    free(td2);
+}
+
 void BuildEmployerSectionHtml(HtmlElement *parent)
 {
     HtmlElement *container  = InitHtmlElement();
     HtmlElement *table      = InitHtmlElement();
     HtmlElement *row1       = InitHtmlElement();
     HtmlElement *row2       = InitHtmlElement();
-    HtmlElement *td1Row1    = InitHtmlElement();
-    HtmlElement *td2Row1    = InitHtmlElement();
-    HtmlElement *td1Row2    = InitHtmlElement();
-    HtmlElement *td2Row2    = InitHtmlElement();
 
-    HtmlTd(td1Row1, "Employer:");
-    HtmlTd(td2Row1, "****:");
-    
-    HtmlTd(td1Row2, "Address:");
-    HtmlTd(td2Row2, "****:");
- 
-    // Build Row 1
-    unsigned long tempHtmlSize = HtmlCalcHtmlLen(td1Row1, td2Row1);
-    char *temp = (char *)malloc(tempHtmlSize);
-    HtmlConcatElements(temp, tempHtmlSize, td1Row1, td2Row1);
-    HtmlTr(row1, temp);
-
-    // Build Row 2
-    tempHtmlSize = HtmlCalcHtmlLen(td1Row2, td2Row2);
-    temp = (char *)malloc(tempHtmlSize);
-    HtmlConcatElements(temp, tempHtmlSize, td1Row2, td2Row2);
-    HtmlTr(row2, temp);
+    BuildTableRow(row1, "Employer:", "****");
+    BuildTableRow(row2, "Address:", "****");
 
     // Build Table
-    tempHtmlSize = HtmlCalcHtmlLen(row1, row2);
-    temp = (char *)malloc(tempHtmlSize);
-    HtmlConcatElements(temp, tempHtmlSize, row1, row2);
-    HtmlTable(table, temp);
+    // in order to preserve the memory of the allocated char *,
+    // we need to create a char * handle (char **)
+    char **temp = (char **)calloc(1, sizeof(char *));
+    HtmlConcatElements(temp, row1, row2);
+    HtmlTable(table, *temp);
     
     HtmlDiv(container, table->InnerHtml); 
     HtmlDiv(parent, container->InnerHtml); 
@@ -121,10 +121,6 @@ void BuildEmployerSectionHtml(HtmlElement *parent)
     free(temp);
     free(row1);
     free(row2);
-    free(td1Row1);
-    free(td2Row1);
-    free(td1Row2);
-    free(td2Row2);
 }
 
 void BuildPayslipHtml(void)

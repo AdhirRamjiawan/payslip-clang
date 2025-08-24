@@ -146,7 +146,7 @@ void HtmlTr(struct HtmlElementType *dest, char *html)
 
 void HtmlTd(struct HtmlElementType *dest, char *html)
 {
-    unsigned long htmlSize = (strlen(html) + HTML_TAG_SYNTAX_LENGTH + 4) * sizeof(char);
+    unsigned long htmlSize = (strlen(html) + HTML_TAG_SYNTAX_LENGTH + 4 + 1) * sizeof(char);
 
     snprintf(dest->InnerHtml, htmlSize, "<td>%s</td>", html);
 }
@@ -173,12 +173,14 @@ unsigned long HtmlCalcHtmlLenWithTagName(char *str1, char *str2, unsigned short 
 
 unsigned long HtmlCalcHtmlLen(HtmlElement *element1, HtmlElement *element2)
 {
-    return (strlen(element1->InnerHtml) + strlen(element2->InnerHtml)) * sizeof(char);
+    return (strlen(element1->InnerHtml) + strlen(element2->InnerHtml) + 1) * sizeof(char);
 }
 
-void HtmlConcatElements(char *temp, unsigned long tempHtmlSize, HtmlElement *element1, HtmlElement *element2)
+void HtmlConcatElements(char **temp, HtmlElement *element1, HtmlElement *element2)
 {
-    snprintf(temp, tempHtmlSize, "%s%s", element1->InnerHtml, element2->InnerHtml);
+    unsigned long tempHtmlSize = HtmlCalcHtmlLen(element1, element2);
+    *temp = (char *)malloc(tempHtmlSize);
+    snprintf(*temp, tempHtmlSize, "%s%s", element1->InnerHtml, element2->InnerHtml);
 }
 
 /** /END/ USER SPACE METHODS  **/
