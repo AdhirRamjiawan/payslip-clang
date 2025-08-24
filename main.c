@@ -93,6 +93,7 @@ void BuildTableRow(HtmlElement *parent, char *str1, char *str2)
     HtmlConcatElements(temp, td1, td2);
     HtmlTr(parent, *temp);
 
+    free(*temp);
     free(temp);
     free(td1);
     free(td2);
@@ -118,6 +119,7 @@ void BuildEmployerSectionHtml(HtmlElement *parent)
     HtmlDiv(container, table->InnerHtml); 
     HtmlDiv(parent, container->InnerHtml); 
 
+    free(*temp);
     free(temp);
     free(row1);
     free(row2);
