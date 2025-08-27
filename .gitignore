@@ -6,3 +6,5 @@ a.out
 payslip
 *.swp
 payslip.dSYM/*
+/.DS_Store
+*.pch

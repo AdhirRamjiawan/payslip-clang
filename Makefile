@@ -1,9 +1,10 @@
-
+SHELL := /bin/bash
+FLAWFINDER := /opt/homebrew/bin/flawfinder
 
 all:
 	gcc main.c html.h html.c 
 	mv a.out payslip
-	flawfinder .
+	$(FLAWFINDER) . 
 
 clean:
 	rm -f ./payslip
