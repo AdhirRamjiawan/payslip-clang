@@ -10,6 +10,7 @@ clean:
 	rm -f ./payslip
 	rm -Rf ./*.dSYM
 	rm -f *.gch
+	rm -f *.pch
 
 debug:
 	gcc -g main.c html.h html.c 

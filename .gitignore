@@ -8,3 +8,4 @@ payslip
 payslip.dSYM/*
 /.DS_Store
 *.pch
+.vscode
