@@ -69,6 +69,11 @@ void ReadEmployeeFile(struct EmployeeType *employee, const char *employeeName)
     
     ReadAndCopyNextLine(employeeFile, employee->FirstName);
     ReadAndCopyNextLine(employeeFile, employee->LastName);
+    ReadAndCopyNextLine(employeeFile, employee->IdNumber);
+    ReadAndCopyNextLine(employeeFile, employee->EmployeeNumber);
+    ReadAndCopyNextLine(employeeFile, employee->Occupation);
+    ///ReadAndCopyNextLine(employeeFile, employee->StartDate);
+    ReadAndCopyNextLine(employeeFile, employee->UifRef);
     
     fclose(employeeFile);
 }
@@ -83,7 +88,7 @@ void PrintEmployeeDetails(struct EmployeeType employee)
 void BuildTableRow(HtmlElement *parent, char *str1, char *str2)
 {
     HtmlElement *td1 = InitHtmlElement();
-    HtmlElement *td2 = InitHtmlElement();
+    HtmlElement *td2 = InitHtmlElement();   
     HtmlTd(td1, str1);
     HtmlTd(td2, str2);
    
@@ -99,15 +104,15 @@ void BuildTableRow(HtmlElement *parent, char *str1, char *str2)
     free(td2);
 }
 
-void BuildEmployerSectionHtml(HtmlElement *parent)
+void BuildEmployerSectionHtml(HtmlElement *parent, struct EmployeeType *employee)
 {
     HtmlElement *container  = InitHtmlElement();
     HtmlElement *table      = InitHtmlElement();
     HtmlElement *row1       = InitHtmlElement();
     HtmlElement *row2       = InitHtmlElement();
 
-    BuildTableRow(row1, "Employer:", "****");
-    BuildTableRow(row2, "Address:", "****");
+    BuildTableRow(row1, "Employer:", "Adhir Ramjiawan");
+    BuildTableRow(row2, "Address:", employee->Address);
 
     // Build Table
     // in order to preserve the memory of the allocated char *,
@@ -125,33 +130,94 @@ void BuildEmployerSectionHtml(HtmlElement *parent)
     free(row2);
 }
 
-void BuildPayslipHtml(void)
+void BuildEmployeeSectionHtml(HtmlElement *parent, struct EmployeeType *employee)
+{
+    HtmlElement *container  = InitHtmlElement();
+    HtmlElement *table      = InitHtmlElement();
+    HtmlElement **rows = calloc(7, sizeof(HtmlElement));
+    HtmlElement **rowsStart = rows;
+
+    for (int i = 0; i < 6; i++)
+        *rows++ = InitHtmlElement();
+
+    rows = rowsStart;
+    
+    BuildTableRow(*rows,      "Employee:",        employee->FirstName);
+    BuildTableRow(*++rows,    "ID. No:",          employee->IdNumber);
+    BuildTableRow(*++rows,    "Employee Number:", employee->EmployeeNumber);
+    BuildTableRow(*++rows,    "Occupation:",      employee->Occupation);
+
+    char startDate[10];
+    snprintf(startDate, 10, "%d-%d-%d", employee->StartDate.Day, employee->StartDate.Month, employee->StartDate.Year);
+    BuildTableRow(*++rows, "Start Date:", startDate);
+
+    BuildTableRow(*++rows, "UIF Ref.:", employee->UifRef);
+    BuildTableRow(*rows, "Pay Period:", "September 2025");
+
+    rows = rowsStart;
+
+    uint tableHtmlSize = strlen((*rows)->InnerHtml);
+
+    tableHtmlSize += strlen((*++rows)->InnerHtml);
+    tableHtmlSize += strlen((*++rows)->InnerHtml); 
+    tableHtmlSize += strlen((*++rows)->InnerHtml); 
+    tableHtmlSize += strlen((*++rows)->InnerHtml);
+    tableHtmlSize += strlen((*++rows)->InnerHtml); 
+    tableHtmlSize += strlen((*rows)->InnerHtml);
+
+    rows = rowsStart;
+
+    char *temp = malloc(sizeof(char *) + tableHtmlSize);
+
+    for (uint i =0; i < 6; i++)
+    {
+        uint tempSize = strlen(temp) + strlen((*rows)->InnerHtml);
+        snprintf(temp, tempSize, "%s%s", temp, (*rows++)->InnerHtml);
+    }
+
+    rows = rowsStart;
+    HtmlTable(table, temp);
+
+    HtmlDiv(container, table->InnerHtml); 
+    HtmlDiv(parent, container->InnerHtml); 
+    
+    free(rows);
+}
+
+
+void BuildPayslipHtml(struct EmployeeType *employee)
 {
     struct HtmlDocumentType *htmlDocument = (struct HtmlDocumentType *)malloc(sizeof(struct HtmlDocumentType));
-    HtmlElement *body = InitHtmlElement();
+    HtmlElement *employerSection = InitHtmlElement();
+    HtmlElement *employeeSection = InitHtmlElement();
     
     InitHtmlDocument(htmlDocument);
     HtmlHead(htmlDocument->Header->InnerHtml, "<title>My Payslip</title>");
     
-    BuildEmployerSectionHtml(body);
+    BuildEmployerSectionHtml(employerSection, employee);
+    BuildEmployeeSectionHtml(employeeSection, employee);
 
-    HtmlBody(htmlDocument->Body->InnerHtml, body->InnerHtml);
+    uint bodyHtmlLength = strlen(employerSection->InnerHtml) + strlen(employeeSection->InnerHtml);
+    char *body = malloc(sizeof(char *) * bodyHtmlLength);
+    snprintf(body, bodyHtmlLength, "%s%s", employerSection->InnerHtml, employeeSection->InnerHtml);
+
+    HtmlBody(htmlDocument->Body->InnerHtml, body);
     
     WriteHtmlDocumentToFile("payslip.html", htmlDocument);
     
     FreeHtmlDocument(htmlDocument);
-    FreeHtmlElement(body); 
+    FreeHtmlElement(employerSection); 
 }
 
 int main(int argc, const char * argv[]) {
-    struct EmployeeType employee;
+    struct EmployeeType employee = {0};
     
     printf("Payslip App.\n");
     
     ReadEmployeeFile(&employee, "emp.txt");
     PrintEmployeeDetails(employee);
 
-    BuildPayslipHtml();
+    BuildPayslipHtml(&employee);
 
     printf("\n");
     return 0;

@@ -11,6 +11,7 @@ clean:
 	rm -Rf ./*.dSYM
 	rm -f *.gch
 	rm -f *.pch
+	rm -f *.html
 
 debug:
 	gcc -g main.c html.h html.c 
