@@ -156,14 +156,10 @@ void BuildEmployeeSectionHtml(HtmlElement *parent, struct EmployeeType *employee
 
     rows = rowsStart;
 
-    uint tableHtmlSize = strlen((*rows)->InnerHtml);
-
-    tableHtmlSize += strlen((*++rows)->InnerHtml);
-    tableHtmlSize += strlen((*++rows)->InnerHtml); 
-    tableHtmlSize += strlen((*++rows)->InnerHtml); 
-    tableHtmlSize += strlen((*++rows)->InnerHtml);
-    tableHtmlSize += strlen((*++rows)->InnerHtml); 
-    tableHtmlSize += strlen((*rows)->InnerHtml);
+    uint tableHtmlSize = 0;
+    
+    for (uint i = 0; i < 6; i++)
+        tableHtmlSize += strlen((*rows++)->InnerHtml);
 
     rows = rowsStart;
 
@@ -187,7 +183,7 @@ void BuildEmployeeSectionHtml(HtmlElement *parent, struct EmployeeType *employee
 
 void BuildPayslipHtml(struct EmployeeType *employee)
 {
-    struct HtmlDocumentType *htmlDocument = (struct HtmlDocumentType *)malloc(sizeof(struct HtmlDocumentType));
+    struct HtmlDocumentType *htmlDocument = malloc(sizeof(struct HtmlDocumentType));
     HtmlElement *employerSection = InitHtmlElement();
     HtmlElement *employeeSection = InitHtmlElement();
     

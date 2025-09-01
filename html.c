@@ -19,8 +19,8 @@ unsigned long _getDocumentHtmlLength(struct HtmlDocumentType *htmlDocument);
 
 HtmlElement *InitHtmlElement()
 {
-    HtmlElement *element = (HtmlElement *)malloc(sizeof(HtmlElement));
-    element->InnerHtml = (char *)malloc(sizeof(char) * MAX_HTML_CONTENT);
+    HtmlElement *element = malloc(sizeof(HtmlElement));
+    element->InnerHtml = malloc(sizeof(char) * MAX_HTML_CONTENT);
 
     if (element->InnerHtml == 0x0)
     {
