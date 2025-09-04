@@ -18,7 +18,7 @@ struct DateType
 {
     short Day;
     short Month;
-    uint Year;
+    int Year;
 };
 
 struct EmployeeType
@@ -156,57 +156,73 @@ void BuildEmployeeSectionHtml(HtmlElement *parent, struct EmployeeType *employee
 
     rows = rowsStart;
 
-    uint tableHtmlSize = 0;
+    int tableHtmlSize = 0;
     
-    for (uint i = 0; i < 6; i++)
+    for (int i = 0; i < 6; i++)
         tableHtmlSize += strlen((*rows++)->InnerHtml);
 
     rows = rowsStart;
 
     char *temp = malloc(sizeof(char *) + tableHtmlSize);
 
-    for (uint i =0; i < 6; i++)
+    for (int i =0; i < 6; i++)
     {
-        uint tempSize = strlen(temp) + strlen((*rows)->InnerHtml);
+        int tempSize = strlen(temp) + strlen((*rows)->InnerHtml);
         snprintf(temp, tempSize, "%s%s", temp, (*rows++)->InnerHtml);
     }
 
     rows = rowsStart;
+
+    free(rows);
+
     HtmlTable(table, temp);
 
     HtmlDiv(container, table->InnerHtml); 
     HtmlDiv(parent, container->InnerHtml); 
-    
-    free(rows);
 }
 
 
 void BuildPayslipHtml(struct EmployeeType *employee)
 {
-    struct HtmlDocumentType *htmlDocument = malloc(sizeof(struct HtmlDocumentType));
+    struct HtmlDocumentType htmlDocument = {
+        .Header = InitHtmlElement(),
+        .Body = InitHtmlElement(),
+        .Footer = InitHtmlElement()
+    };
     HtmlElement *employerSection = InitHtmlElement();
     HtmlElement *employeeSection = InitHtmlElement();
     
-    InitHtmlDocument(htmlDocument);
-    HtmlHead(htmlDocument->Header->InnerHtml, "<title>My Payslip</title>");
+    InitHtmlDocument(&htmlDocument);
+    HtmlHead((&htmlDocument)->Header->InnerHtml, "<title>My Payslip</title>");
     
     BuildEmployerSectionHtml(employerSection, employee);
     BuildEmployeeSectionHtml(employeeSection, employee);
 
-    uint bodyHtmlLength = strlen(employerSection->InnerHtml) + strlen(employeeSection->InnerHtml);
+    int bodyHtmlLength = strlen(employerSection->InnerHtml) + strlen(employeeSection->InnerHtml);
     char *body = malloc(sizeof(char *) * bodyHtmlLength);
     snprintf(body, bodyHtmlLength, "%s%s", employerSection->InnerHtml, employeeSection->InnerHtml);
 
-    HtmlBody(htmlDocument->Body->InnerHtml, body);
+    HtmlBody((&htmlDocument)->Body->InnerHtml, body);
     
-    WriteHtmlDocumentToFile("payslip.html", htmlDocument);
+    WriteHtmlDocumentToFile("payslip.html", &htmlDocument);
     
-    FreeHtmlDocument(htmlDocument);
+    //FreeHtmlDocument(&htmlDocument);
     FreeHtmlElement(employerSection); 
 }
 
 int main(int argc, const char * argv[]) {
-    struct EmployeeType employee = {0};
+    struct EmployeeType employee = 
+    {  
+        .FirstName = "",
+        .LastName = "",
+        .IdNumber = "",
+        .Address = "",
+        .EmployeeNumber = "",
+        .StartDate = {1, 1, 1111},
+        .UifRef = "",
+        .Salary = 0.0,
+        .Occupation = ""
+    };
     
     printf("Payslip App.\n");
     

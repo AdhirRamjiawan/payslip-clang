@@ -1,0 +1,5 @@
+project('tutorial', 'c')
+files= files( 'html.h', 'html.c','main.c')
+debug(true)
+configure_file(input:'employee_emp.txt', output:'employee_emp.txt', copy: true)
+executable('payslip', files)
