@@ -117,7 +117,7 @@ void HtmlBody(char *dest, char *html)
 
 void HtmlTable(struct HtmlElementType *dest, char *html)
 {
-    unsigned long htmlSize = (strlen(html) + HTML_TAG_SYNTAX_LENGTH + 10) * sizeof(char*);
+    unsigned long htmlSize = (strlen(html) + HTML_TAG_SYNTAX_LENGTH + 10) * sizeof(char);
 
     snprintf(dest->InnerHtml, htmlSize, "<table>%s</table>", html);
 
@@ -140,14 +140,14 @@ void HtmlTh(struct HtmlElementType *dest, char *html)
 
 void HtmlTr(struct HtmlElementType *dest, char *html)
 {
-    unsigned long htmlSize = (strlen(html) + HTML_TAG_SYNTAX_LENGTH + 4) * sizeof(char*);
+    unsigned long htmlSize = (strlen(html) + HTML_TAG_SYNTAX_LENGTH + 4) * sizeof(char);
 
     snprintf(dest->InnerHtml, htmlSize, "<tr>%s</tr>", html);
 }
 
 void HtmlTd(struct HtmlElementType *dest, char *html)
 {
-    unsigned long htmlSize = (strlen(html) + HTML_TAG_SYNTAX_LENGTH + 4 + 1) * sizeof(char*);
+    unsigned long htmlSize = (strlen(html) + HTML_TAG_SYNTAX_LENGTH + 4 + 1) * sizeof(char);
 
     snprintf(dest->InnerHtml, htmlSize, "<td>%s</td>", html);
 }
@@ -155,14 +155,14 @@ void HtmlTd(struct HtmlElementType *dest, char *html)
 
 void HtmlDiv(struct HtmlElementType *dest, char *html)
 {
-    unsigned long htmlSize = (strlen(html) +  HTML_TAG_SYNTAX_LENGTH + 6) * sizeof(char*);
+    unsigned long htmlSize = (strlen(html) +  HTML_TAG_SYNTAX_LENGTH + 6) * sizeof(char);
 
     snprintf(dest->InnerHtml, htmlSize, "<div>%s</div>", html);
 }
 
 void HtmlH1(struct HtmlElementType *dest, char *html)
 {
-    unsigned long htmlSize = (strlen(html) + HTML_TAG_SYNTAX_LENGTH + 4) * sizeof(char*);
+    unsigned long htmlSize = (strlen(html) + HTML_TAG_SYNTAX_LENGTH + 4) * sizeof(char);
 
     snprintf(dest->InnerHtml, htmlSize, "<h1>%s</h1>", html);
 }
@@ -174,7 +174,7 @@ unsigned long HtmlCalcHtmlLenWithTagName(char *str1, char *str2, unsigned short 
 
 unsigned long HtmlCalcHtmlLen(HtmlElement *element1, HtmlElement *element2)
 {
-    return (strlen(element1->InnerHtml) + strlen(element2->InnerHtml) + 1) * sizeof(char*);
+    return (strlen(element1->InnerHtml) + strlen(element2->InnerHtml) + 1) * sizeof(char);
 }
 
 void HtmlConcatElements(char **temp, HtmlElement *element1, HtmlElement *element2)

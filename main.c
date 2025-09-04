@@ -70,6 +70,7 @@ void ReadEmployeeFile(struct EmployeeType *employee, const char *employeeName)
     ReadAndCopyNextLine(employeeFile, employee->FirstName);
     ReadAndCopyNextLine(employeeFile, employee->LastName);
     ReadAndCopyNextLine(employeeFile, employee->IdNumber);
+    ReadAndCopyNextLine(employeeFile, employee->Address);
     ReadAndCopyNextLine(employeeFile, employee->EmployeeNumber);
     ReadAndCopyNextLine(employeeFile, employee->Occupation);
     ///ReadAndCopyNextLine(employeeFile, employee->StartDate);
@@ -94,7 +95,7 @@ void BuildTableRow(HtmlElement *parent, char *str1, char *str2)
    
     // in order to preserve the memory of the allocated char *,
     // we need to create a char * handle (char **)
-    char **temp = (char **)calloc(1, sizeof(char *));
+    char **temp = (char **)calloc(1, sizeof(char));
     HtmlConcatElements(temp, td1, td2);
     HtmlTr(parent, *temp);
 
@@ -117,7 +118,7 @@ void BuildEmployerSectionHtml(HtmlElement *parent, struct EmployeeType *employee
     // Build Table
     // in order to preserve the memory of the allocated char *,
     // we need to create a char * handle (char **)
-    char **temp = (char **)calloc(1, sizeof(char *));
+    char **temp = (char **)calloc(1, sizeof(char));
     HtmlConcatElements(temp, row1, row2);
     HtmlTable(table, *temp);
     
@@ -163,7 +164,8 @@ void BuildEmployeeSectionHtml(HtmlElement *parent, struct EmployeeType *employee
 
     rows = rowsStart;
 
-    char *temp = malloc(sizeof(char *) + tableHtmlSize);
+    char *temp = malloc(sizeof(char) + tableHtmlSize);
+    memset(temp, '\0', sizeof(char) + tableHtmlSize);
 
     for (int i =0; i < 6; i++)
     {
@@ -199,7 +201,7 @@ void BuildPayslipHtml(struct EmployeeType *employee)
     BuildEmployeeSectionHtml(employeeSection, employee);
 
     int bodyHtmlLength = strlen(employerSection->InnerHtml) + strlen(employeeSection->InnerHtml);
-    char *body = malloc(sizeof(char *) * bodyHtmlLength);
+    char *body = malloc(sizeof(char) * bodyHtmlLength);
     snprintf(body, bodyHtmlLength, "%s%s", employerSection->InnerHtml, employeeSection->InnerHtml);
 
     HtmlBody((&htmlDocument)->Body->InnerHtml, body);
@@ -213,15 +215,15 @@ void BuildPayslipHtml(struct EmployeeType *employee)
 int main(int argc, const char * argv[]) {
     struct EmployeeType employee = 
     {  
-        .FirstName = "",
-        .LastName = "",
-        .IdNumber = "",
-        .Address = "",
-        .EmployeeNumber = "",
+        .FirstName = {0},
+        .LastName = {0},
+        .IdNumber = {0},
+        .Address = {0},
+        .EmployeeNumber = {0},
         .StartDate = {1, 1, 1111},
-        .UifRef = "",
-        .Salary = 0.0,
-        .Occupation = ""
+        .UifRef = {0},
+        .Salary = {0},
+        .Occupation = {0}
     };
     
     printf("Payslip App.\n");
